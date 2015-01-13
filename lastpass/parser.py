@@ -54,6 +54,8 @@ def parse_ACCT(chunk, encryption_key):
         secure_note_type = read_item(io)
 
         note_data = parse_secure_note_server(notes)
+    else:
+        note_data = None
         
     return group, note_name, note_data
 
@@ -110,7 +112,14 @@ def parse_secure_note_server(notes):
         if not i:  # blank line
             continue
             
-        key, value = i.split(b':')
+        parts = i.split(b':',1)
+        
+        key = parts[0]
+        
+        if(len(parts)>1):
+            value = parts[1]
+        else:
+            value = ''
         
         data[key] = value
         
