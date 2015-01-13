@@ -44,9 +44,11 @@ class Vault(object):
                         self.notes[group] = {}
                     
                     self.notes[group][note_name] = note_data
-                    
+            """        
+            # TODO: Re-enabled this items which are currently throwing exceptions
             elif i.id == b'PRIK':
                 rsa_private_key = parser.parse_PRIK(i, encryption_key)
             elif i.id == b'SHAR':
                 # After SHAR chunk all the folliwing accounts are enrypted with a new key
                 key = parser.parse_SHAR(i, encryption_key, rsa_private_key)['encryption_key']
+            """
