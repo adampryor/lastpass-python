@@ -105,7 +105,8 @@ def parse_SHAR(chunk, encryption_key, rsa_key):
 
 def parse_secure_note_server(notes):
     
-    data = {}
+    #Save raw value in addition to parsed field values
+    data = {'__raw__': notes}
     
     for i in notes.split(b'\n'):
         
