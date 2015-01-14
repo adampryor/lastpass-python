@@ -4,10 +4,27 @@ from . import parser
 
 
 class Vault(object):
+    
+    remote_data_cache_allowed = False
+    remote_data_cache = {}
+    
+    @classmethod
+    def clear_remote_data_cache(cls):
+        cls.remote_data_cache = {}
+    
     @classmethod
     def open_remote(cls, username, password, multifactor_password=None):
         """Fetches a blob from the server and creates a vault"""
-        return cls.open(cls.fetch_blob(username, password, multifactor_password), username, password)
+        
+        if cls.remote_data_cache_allowed == True and username in cls.remote_data_cache:
+            remote_data = cls.remote_data_cache[username]
+        else:
+            remote_data = cls.open(cls.fetch_blob(username, password, multifactor_password), username, password)
+            
+            if cls.remote_data_cache_allowed == True:
+                cls.remote_data_cache[username] = remote_data
+            
+        return remote_data
 
     @classmethod
     def open_local(cls, blob_filename, username, password):
